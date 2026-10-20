@@ -23,10 +23,14 @@ Only one: **[Vanilla Factions Expanded – Classical](https://steamcommunity.com
 
 ## Building from source
 
-1. Open `Source/VFEC_PerkToggle.csproj` in Visual Studio or Rider.
-2. Edit the `<RimWorldPath>` and `<VFECPath>` properties at the top of the `.csproj` to match your installation paths.
-3. Also set the VEF (Vanilla Expanded Framework) DLL path.
-4. Build — the `.dll` is output directly to `1.6/Assemblies/`.
+The source (`Source/PerkToggle.cs`) is shared; there is one project per game version, and each must be built against the matching installed RimWorld.
+
+- **1.6**: `Source/VFEC_PerkToggle.csproj` (`net472`) → `1.6/Assemblies/`
+- **1.7**: `Source/1.7/VFEC_PerkToggle.csproj` (`net10.0`, references `Assembly-CSharp`, `UnityStubs`, Harmony and VEF 1.7; VFEC is the 1.6 DLL, which VFE Classical also loads for 1.7) → `1.7/Assemblies/`
+
+1. Open the project for your version in Visual Studio or Rider (or `dotnet build -c Release`).
+2. Edit the `<RimWorldPath>` and `<RimWorldModPath>` properties at the top of the `.csproj` to match your installation paths.
+3. Build — the `.dll` is output directly to the matching `Assemblies/` folder.
 
 ### Finding the VFEC assembly name
 

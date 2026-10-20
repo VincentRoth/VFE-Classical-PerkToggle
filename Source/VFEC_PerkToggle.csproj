@@ -10,6 +10,8 @@
     <OutputPath>..\1.6\Assemblies\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <!-- The 1.7 project lives in Source\1.7 and has its own sources/obj -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);1.7\**</DefaultItemExcludes>
   </PropertyGroup>
 
   <!-- ── Adjust these two paths for your machine ──────────────────────────── -->

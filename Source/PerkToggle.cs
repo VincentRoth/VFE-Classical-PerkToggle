@@ -46,6 +46,20 @@ namespace VFEC_PerkToggle
     [HarmonyPatch]
     public static class Patch_Dialog_SenatorInfo_DoPerkInfo
     {
+        // In 1.7, VFEC (built for 1.6) references Texture2D from UnityEngine.CoreModule while the game
+        // uses UnityStubs. The compiler cannot unify both, so VFEC textures are read through Traverse
+        // (the runtime redirects UnityEngine* to UnityStubs). Works unchanged on 1.6.
+        private static Texture2D PerkBGLocked =>
+            Traverse.Create(typeof(SenatorUIUtility)).Field<Texture2D>("PerkBG_Locked").Value;
+
+        // Loaded lazily on first draw (main thread); Textures/VFECPT/HighlightCircle.png
+        private static Texture2D highlightCircle;
+        private static Texture2D HighlightCircle =>
+            highlightCircle ??= ContentFinder<Texture2D>.Get("VFECPT/HighlightCircle", false);
+
+        private static Texture2D PerkIcon(PerkDef perk) =>
+            Traverse.Create(perk).Property<Texture2D>("Icon").Value;
+
         /// <summary>
         /// Harmony prefix on Dialog_SenatorInfo.DoPerkInfo.
         /// __instance gives us the dialog so we can read its Faction field.
@@ -78,23 +92,20 @@ namespace VFEC_PerkToggle
             bool isActive = perkManager.ActivePerks.Contains(perk);
 
             // Choose background: active = faction-coloured unlocked BG, inactive = grey locked BG.
-            Texture2D bg = isActive ? perkBG_Unlocked : SenatorUIUtility.PerkBG_Locked;
+            Texture2D bg = isActive ? perkBG_Unlocked : PerkBGLocked;
 
             // Draw background + perk icon exactly as the original does.
             Widgets.DrawTextureFitted(inRect, bg, 1f);
-            Widgets.DrawTextureFitted(inRect.ContractedBy(10f), perk.Icon, 1f);
+            Widgets.DrawTextureFitted(inRect.ContractedBy(10f), PerkIcon(perk), 1f);
 
-            // Draw a hover highlight so the player knows the icon is interactive.
+            // Circular hover highlight (inscribed in the icon tile) shows the icon is clickable.
             if (Mouse.IsOver(inRect))
             {
-                Widgets.DrawHighlight(inRect);
+                if (HighlightCircle != null)
+                {
+                    Widgets.DrawTextureFitted(inRect, HighlightCircle, 1f);
+                }
 
-                string tipKey = isActive ? "VFECPT_Tooltip_Disable" : "VFECPT_Tooltip_Enable";
-                TooltipHandler.TipRegion(inRect, tipKey.Translate());
-            }
-            else
-            {
-                // Always show the standard description tooltip when not adding the toggle tip.
                 TooltipHandler.TipRegion(inRect, $"{perk.LabelCap}\n\n{perk.description}");
             }
 
@@ -104,18 +115,10 @@ namespace VFEC_PerkToggle
                 if (isActive)
                 {
                     perkManager.RemovePerk(perk);
-                    Messages.Message(
-                        "VFECPT_PerkDisabled".Translate(perk.LabelCap),
-                        MessageTypeDefOf.NeutralEvent,
-                        historical: false);
                 }
                 else
                 {
                     perkManager.AddPerk(perk);
-                    Messages.Message(
-                        "VFECPT_PerkEnabled".Translate(perk.LabelCap),
-                        MessageTypeDefOf.PositiveEvent,
-                        historical: false);
                 }
             }
 

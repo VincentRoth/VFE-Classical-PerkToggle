@@ -6,6 +6,7 @@
   <description>Once you have gained favor of all senators in a Republic faction (making it permanent), you can click any of that faction's senator perk icons in the senator view to toggle them on or off. Toggle state is stored directly in GameComponent_PerkManager.ActivePerks via AddPerk/RemovePerk, so all perk effects are properly applied and removed. Disabled perks display as locked (faded background).</description>
   <supportedVersions>
     <li>1.6</li>
+    <li>1.7</li>
   </supportedVersions>
   <modDependencies>
     <li>

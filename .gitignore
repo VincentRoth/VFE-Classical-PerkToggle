@@ -1,4 +1,4 @@
-Source/.vs
+Source/**/.vs
 Source/**/obj
 *.pdb
 *.zip
