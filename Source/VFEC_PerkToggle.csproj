@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <AssemblyName>VFEC_PerkToggle</AssemblyName>
+    <RootNamespace>VFEC_PerkToggle</RootNamespace>
+    <Nullable>disable</Nullable>
+    <LangVersion>10</LangVersion>
+    <!-- Outputs straight into the mod Assemblies folder so you never need to copy manually -->
+    <OutputPath>..\1.6\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <!-- ── Adjust these two paths for your machine ──────────────────────────── -->
+  <PropertyGroup>
+    <!-- RimWorld install folder -->
+    <RimWorldPath Condition="'$(RimWorldPath)'==''">C:\Program Files (x86)\Steam\steamapps\common\RimWorld</RimWorldPath>
+    <!-- Steam workshop content folder — VFE Classical workshop ID: 2787850474 -->
+    <RimWorldModPath>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100</RimWorldModPath>
+  </PropertyGroup>
+
+	<ItemGroup>
+    <!-- RimWorld core assemblies -->
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldPath)\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldPath)\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(RimWorldModPath)\2009463077\1.6\Assemblies\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+
+    <!-- Vanilla Expanded Framework (VEF) — Dialog_SenatorInfo references VEF.Utils -->
+    <Reference Include="VEF">
+      <HintPath>$(RimWorldModPath)\2023507013\1.6\Assemblies\VEF.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+
+    <!-- VFE Classical — needed for Dialog_SenatorInfo, GameComponent_PerkManager, etc. -->
+    <Reference Include="VFEC">
+      <HintPath>$(RimWorldModPath)\2787850474\1.6\Assemblies\VFEC.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

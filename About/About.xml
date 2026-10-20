@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>dibolic.VFEClassical.PerkToggle</packageId>
+  <name>VFE Classical - Senator Perk Toggle</name>
+  <author>Dibolic</author>
+  <description>Once you have gained favor of all senators in a Republic faction (making it permanent), you can click any of that faction's senator perk icons in the senator view to toggle them on or off. Toggle state is stored directly in GameComponent_PerkManager.ActivePerks via AddPerk/RemovePerk, so all perk effects are properly applied and removed. Disabled perks display as locked (faded background).</description>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>OskarPotocki.VFE.Classical</packageId>
+      <displayName>Vanilla Factions Expanded - Classical</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2787850474</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>OskarPotocki.VFE.Classical</li>
+  </loadAfter>
+</ModMetaData>
