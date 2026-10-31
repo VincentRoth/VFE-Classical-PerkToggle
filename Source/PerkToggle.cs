@@ -43,6 +43,7 @@ namespace VFEC_PerkToggle
     ///       * Inactive perks → draw with the locked (faded) background + click to enable.
     ///       * We skip the original draw (return false).
     /// </summary>
+    [StaticConstructorOnStartup]
     [HarmonyPatch]
     public static class Patch_Dialog_SenatorInfo_DoPerkInfo
     {
@@ -52,10 +53,9 @@ namespace VFEC_PerkToggle
         private static Texture2D PerkBGLocked =>
             Traverse.Create(typeof(SenatorUIUtility)).Field<Texture2D>("PerkBG_Locked").Value;
 
-        // Loaded lazily on first draw (main thread); Textures/VFECPT/HighlightCircle.png
-        private static Texture2D highlightCircle;
-        private static Texture2D HighlightCircle =>
-            highlightCircle ??= ContentFinder<Texture2D>.Get("VFECPT/HighlightCircle", false);
+        // Loaded at startup on the main thread (StaticConstructorOnStartup); Textures/VFECPT/HighlightCircle.png
+        private static readonly Texture2D HighlightCircle =
+            ContentFinder<Texture2D>.Get("VFECPT/HighlightCircle", false);
 
         private static Texture2D PerkIcon(PerkDef perk) =>
             Traverse.Create(perk).Property<Texture2D>("Icon").Value;
